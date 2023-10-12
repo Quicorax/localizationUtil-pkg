@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LocalizationUtil.Runtime
+namespace Services.Runtime.Localization
 {
-    [CreateAssetMenu(menuName = "Quicorax/Localization/LocalizationsData", fileName = "Localizations Data")]
+    [CreateAssetMenu(menuName = "Quicorax/LocalizationUtil/LocalizationsData", fileName = "Localizations Data")]
     public class Localizations : ScriptableObject
     {
         [Serializable]

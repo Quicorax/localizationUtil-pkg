@@ -1,6 +1,6 @@
 {
   "name": "es.quicorax.localizationutil",
-  "version": "0.5.1",
+  "version": "1.0.1",
   "displayName": "Localization Utility Package",
   "description": "Localization management Utility tools",
   "unity": "2021.3",

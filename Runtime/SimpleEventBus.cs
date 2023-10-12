@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace LocalizationUtil.Runtime
+namespace Services.Runtime.Localization
 {
     [CreateAssetMenu(menuName = "Quicorax/EventBus/Simple", fileName = "SimpleEventBus")]
     public class SimpleEventBus : ScriptableObject

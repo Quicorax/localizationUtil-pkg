@@ -1,4 +1,4 @@
-﻿namespace LocalizationUtil.Runtime
+﻿namespace Services.Runtime.Localization
 {
     public enum Language
     {
