@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Services.Runtime.Localization
@@ -8,41 +9,50 @@ namespace Services.Runtime.Localization
     public class LocalizedText : ScriptableObject
     {
         [Serializable]
-        public class LocalizationAsset
+        public class LocalizedEntry
         {
-            public string TextKey;
-            public LocalizationBundle LocalizedBundle;
+            public string LanguageKey;
+            public string Text;
         }
 
         [Serializable]
-        public class LocalizationBundle
+        public class LocalizationAsset
         {
-            public string EnglishText;
-            public string SpanishText;
-            public string CatalanText;
+            public string TextKey;
+            public List<LocalizedEntry> LocalizedBundle;
         }
 
         public List<LocalizationAsset> LocalizationsData = new();
-        private readonly Dictionary<string, LocalizationBundle> LocalizationData = new();
+        private readonly Dictionary<string, Dictionary<string, string>> LocalizationData = new();
 
         public LocalizedText Initialize()
         {
             foreach (var localizationBundle in LocalizationsData)
             {
-                LocalizationData.Add(localizationBundle.TextKey, localizationBundle.LocalizedBundle);
+                var serializedLocalizationData = localizationBundle.LocalizedBundle
+                    .ToDictionary(x => x.LanguageKey, x => x.Text);
+
+                LocalizationData.Add(localizationBundle.TextKey, serializedLocalizationData);
             }
 
             return this;
         }
 
-        public string GetLocalizedText(string textKey, Language language)
+        public string GetLocalizedText(string textKey, string languageKey)
         {
-            return language switch
+            var localizedText = string.Empty;
+            
+            if (!LocalizationData.TryGetValue(textKey, out var languagesBundle))
             {
-                Language.English => LocalizationData[textKey].EnglishText,
-                Language.Catalan => LocalizationData[textKey].CatalanText,
-                _ => LocalizationData[textKey].SpanishText,
-            };
+                Debug.LogError($"Localization Error: '{textKey}' Key is not present at LocalizedTexts!");
+            }
+            
+            if (!languagesBundle.TryGetValue(languageKey, out localizedText))
+            {
+                Debug.LogError($"Localization Error: '{languageKey}' Language for '{textKey}' Key is not present at LocalizedTexts!");
+            }
+
+            return localizedText;
         }
     }
 }

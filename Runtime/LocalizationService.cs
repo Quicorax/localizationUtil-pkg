@@ -7,7 +7,7 @@ namespace Services.Runtime.Localization
     {
         public Action OnLanguageSet { get; set; }
 
-        private Language _language = Language.English;
+        private string _language = "English";
         private readonly LocalizedText _localizedText;
 
         public LocalizationService()
@@ -15,7 +15,7 @@ namespace Services.Runtime.Localization
             _localizedText = FetchDependencies().Initialize();
         }
 
-        public void SetLanguage(Language language)
+        public void SetLanguage(string language)
         {
             _language = language;
 

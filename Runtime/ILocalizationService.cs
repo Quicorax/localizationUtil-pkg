@@ -5,7 +5,7 @@ namespace Services.Runtime.Localization
     public interface ILocalizationService
     {
         Action OnLanguageSet { set; get; }
-        void SetLanguage(Language language);
+        void SetLanguage(string language);
         string Localize(string key);
     }
 }
