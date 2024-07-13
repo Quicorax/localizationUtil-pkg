@@ -1,27 +1,36 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Services.Runtime.Localization
 {
     public class LocalizationService : ILocalizationService
     {
+        public Action OnLanguageSet { get; set; }
+
         private Language _language = Language.English;
-        private readonly Localizations _localizationData;
+        private readonly LocalizedText _localizedText;
 
         public LocalizationService()
         {
-            _localizationData = FetchDependencies().LocalizationData.Initialize();
+            _localizedText = FetchDependencies().Initialize();
         }
-        
-        public void SetLanguage(Language language) => _language = language;
-        public string Localize(string key) => _localizationData.GetLocalizedText(key, _language);
 
-        private LocalizationDependencies FetchDependencies()
+        public void SetLanguage(Language language)
         {
-            var dependencies = Resources.Load<LocalizationDependencies>("Localization/LocalizationDependencies");
+            _language = language;
+
+            OnLanguageSet();
+        }
+
+        public string Localize(string key) => _localizedText.GetLocalizedText(key, _language);
+
+        private LocalizedText FetchDependencies()
+        {
+            var dependencies = Resources.Load<LocalizedText>("Localization/LocalizedText");
 
             if (dependencies == null)
             {
-                Debug.LogError("No Localization dependencies defined in the Resources folder!");
+                Debug.LogError("No LocalizedText defined in the Resources folder!");
             }
             
             return dependencies;

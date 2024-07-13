@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -7,7 +8,6 @@ namespace Services.Runtime.Localization
     [RequireComponent(typeof(TMP_Text))]
     public class TextLocalizerComponent : MonoBehaviour
     {
-        [SerializeField] private SimpleEventBus _refreshText;
         [SerializeField] private string _textKey;
 
         private ILocalizationService _localizationService;
@@ -19,17 +19,11 @@ namespace Services.Runtime.Localization
             _localizationService = localizationService;
         }
 
-        public void Print(string textKey)
-        {
-            _textKey = textKey;
-            _text.text = _localizationService.Localize(_textKey);
-        }
-
         private void Awake()
         {
             _text = GetComponent<TMP_Text>();
 
-            _refreshText.Event += ForceUpdate;
+            _localizationService.OnLanguageSet += ForceUpdate;
         }
 
         private void Start()
@@ -40,9 +34,9 @@ namespace Services.Runtime.Localization
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            _refreshText.Event -= ForceUpdate;
+            _localizationService.OnLanguageSet -= ForceUpdate;
         }
 
         private void ForceUpdate()
@@ -51,6 +45,12 @@ namespace Services.Runtime.Localization
             {
                 Print(_textKey);
             }
+        }
+
+        private void Print(string textKey)
+        {
+            _textKey = textKey;
+            _text.text = _localizationService.Localize(_textKey);
         }
     }
 }
