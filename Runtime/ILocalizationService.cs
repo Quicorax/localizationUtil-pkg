@@ -6,6 +6,6 @@ namespace Services.Runtime.Localization
     {
         Action OnLanguageSet { set; get; }
         void SetLanguage(string language);
-        string Localize(string key);
+        string Localize(string textKey);
     }
 }
