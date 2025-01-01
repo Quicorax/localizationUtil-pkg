@@ -7,7 +7,7 @@ namespace Services.Runtime.Localization
 {
     public class LocalizationService : ILocalizationService
     {
-        public Action OnLanguageSet { get; set; }
+        public Action OnLanguageSet { get; set; } = delegate { };
 
         private string _language = "English";
         private readonly Dictionary<string, Dictionary<string, string>> _localizationData = new();
